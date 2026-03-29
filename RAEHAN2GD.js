@@ -206,7 +206,7 @@ case 'setppgchanz': {
 		case 'insta' : case 'instagram' :  {
 			const hanzzz =`https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
 		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
-caption: hanzzz }}
+caption: hanzzz })
 		break
 			// Menu
 			
@@ -244,9 +244,9 @@ caption: hanzzz }}
 ┃ ╰━━━━━━━━━━━━━╯
 ┃
 ▬▭▬▭▬▭▬▭▬▬▭▬▭` // ) }
-RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
+RAEHAN2GD.sendMessage(m.chat, a{ image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
 "contextInfo": {
-"externalAdReply": {a
+"externalAdReply": {
 "title": `⏤͟͟͞ℍ𝔸ℕℤ`,
 "previewType": "PHOTO",
 "showAdAttribution": true,
