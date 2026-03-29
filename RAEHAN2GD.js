@@ -204,7 +204,7 @@ case 'setppgchanz': {
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
 		case 'insta' : case 'instagram' :  {
-			const = hanzzz `https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
+			const hanzzz =`https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
 		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
 "contextInfo": { caption : hanzzz }}
 		break
