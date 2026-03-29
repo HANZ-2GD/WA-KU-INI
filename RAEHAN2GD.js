@@ -203,8 +203,10 @@ case 'setppgchanz': {
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
-		case 'insta' : case 'instagram' :  (m.reply { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}('https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq')})
-		
+		case 'insta' : case 'instagram' :  {
+			const = `https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
+		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
+"contextInfo": { caption : hanzzz }}
 		break
 			// Menu
 			
