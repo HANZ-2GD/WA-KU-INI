@@ -206,13 +206,13 @@ case 'setppgchanz': {
 		
 																	   
 		
-		/*case 'insta' : case 'instagram' :  {
+		case 'insta' : case 'instagram' :  {
 			const hanzzz =`
         
 		https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
-		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
+		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://deposit.pictures/p/21f48e9423924ad58ddd91e8efc5ced1'}, 
 caption: hanzzz })}
-		break*/
+		break
 
 
 
