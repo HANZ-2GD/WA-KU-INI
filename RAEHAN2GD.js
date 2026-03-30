@@ -203,8 +203,70 @@ case 'setppgchanz': {
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
-		
-																	   
+		case 'upsw': {
+    // 1. Ambil caption dari input (jika ada)
+    let captionText = q ? q.trim() : '';
+    
+    // 2. Tentukan JID Diri Sendiri (Bot/Nomor yang terhubung)
+    // Ini adalah kunci agar sumber kutipannya berasal dari diri sendiri
+    const myJid = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+
+    // 3. Cek apakah ada media gambar yang dikirim atau di-reply
+    const isImage = m.type === 'imageMessage';
+    const isQuotedImage = quoted ? (quoted.type === 'imageMessage') : false;
+
+    if (isImage || isQuotedImage) {
+        reply('⏳ Sedang memproses story self-mention... Tunggu sebentar.');
+
+        try {
+            // 4. Unduh Buffer Media dengan aman
+            const mediaBuffer = await (isQuotedImage ? quoted.download() : m.download());
+            
+            // 5. Ambil daftar kontak di memori agar status muncul di HP teman-temanmu
+            // (Sesuaikan conn.store dengan struktur bot kamu jika berbeda)
+            let contacts = [];
+            if (conn.store && conn.store.contacts) {
+                contacts = Object.values(conn.store.contacts)
+                    .filter(c => c.id.endsWith('@s.whatsapp.net'))
+                    .map(c => c.id);
+            }
+
+            // 6. Eksekusi pengiriman ke status@broadcast
+            await conn.sendMessage('status@broadcast', {
+                image: mediaBuffer, 
+                caption: captionText,
+                contextInfo: {
+                    // INTI FAKE RESHARE SELF-MENTION
+                    quotedMessage: {
+                        extendedTextMessage: {
+                            text: "Menyebut Anda dalam cerita", // Indikator mention bawaan WA
+                            fontStyle: 1
+                        }
+                    },
+                    participant: myJid, // <-- Diisi dengan nomor sendiri
+                    remoteJid: 'status@broadcast', // Wajib untuk story
+                    
+                    // Metadata tambahan
+                    forwardingScore: 1,
+                    isForwarded: true, 
+                    mentionedJid: [myJid] // Me-mention diri sendiri juga di sistem
+                }
+            }, {
+                // Masukkan array kontak. Jika Baileys-mu versi lama, array kosong [] biasanya sudah cukup.
+                statusJidList: contacts.length > 0 ? contacts : [] 
+            });
+
+            reply('✅ Story "Fake Reshare" diri sendiri berhasil diunggah! Cek tab statusmu.');
+        } catch (error) {
+            console.error("Gagal up story:", error);
+            reply(`❌ Gagal mengunggah story. Error: ${error.message}`);
+        }
+    } else {
+        reply(`Silakan reply gambar yang ingin dijadikan story!\nContoh: *${prefix + command} Makasih diriku sendiri*`);
+    }
+    
+}				  
+		break     
 		
 		/*case 'insta' : case 'instagram' :  {
 			const hanzzz =`
