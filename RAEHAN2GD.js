@@ -204,62 +204,66 @@ case 'setppgchanz': {
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 case 'upsw':
 case 'upstory': {
-    // 1. Validasi Owner (Hanz)
-    if (!isCreator) return m.reply('Fitur ini khusus untuk Owner!')
-    
-    // 2. Cek apakah ada status/pesan yang di-reply (quoted)
-    if (!m.quoted) return m.reply(`Reply status/pesan orang yang mention kamu, lalu ketik ${prefix + command}`)
+    // 1. Validasi Keamanan: Hanya Owner yang bisa menjalankan
+    if (!isCreator) return m.reply('Maaf, fitur ini hanya untuk Owner!')
 
-    const mime = (quoted.msg || quoted).mimetype || ''
-    
-    // 3. Setting Caption sesuai permintaan
-    // Jika kamu tambah teks setelah command, akan muncul di atas caption wajib
-    const isiCaption = text ? `${text}\n\ndibagikan ulang dari penyebutan` : 'dibagikan ulang dari penyebutan'
-    
-    // 4. Ambil JID pengirim untuk di-tag balik (mentions)
-    const jidTarget = [m.sender] 
+    // 2. Cek apakah ada media atau teks yang di-reply
+    if (!m.quoted) return m.reply(`Reply media atau teks yang ingin di-up ke story, lalu ketik ${prefix + command}`)
 
     try {
-        // 5. Anti-Gaib: Kirim sinyal kehadiran ke jalur Status
-        await RAEHAN2GD.presenceSubscribe('status@broadcast')
-        await RAEHAN2GD.sendPresenceUpdate('recording', 'status@broadcast')
+        const mime = (quoted.msg || quoted).mimetype || ''
+        const captionWajib = 'dibagikan ulang dari penyebutan'
+        
+        // Gabungkan teks tambahan (jika ada) dengan caption wajib
+        const finalCaption = text ? `${text}\n\n${captionWajib}` : captionWajib
+        
+        // MENTION DIRI SENDIRI: Menggunakan nomor pengirim (Owner)
+        // Ini yang membuat notifikasi "Seseorang menyebut Anda" muncul di WA kamu
+        const selfMention = [m.sender]
 
+        // 3. PROSES SINKRONISASI (WAJIB agar status tidak gaib/kosong)
+        await RAEHAN2GD.presenceSubscribe('status@broadcast')
+        await RAEHAN2GD.sendPresenceUpdate('composing', 'status@broadcast')
+
+        // 4. LOGIKA PENGIRIMAN MEDIA
         if (/image/.test(mime)) {
-            // Proses Repost Gambar
+            // Upload Gambar
             let media = await quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 image: media, 
-                caption: isiCaption,
-                mentions: jidTarget 
+                caption: finalCaption,
+                mentions: selfMention 
             })
-            m.reply('✅ Berhasil repost gambar dengan penyebutan!')
+            m.reply('✅ Sukses! Cek Story WA kamu, mention otomatis terpasang.')
 
         } else if (/video/.test(mime)) {
-            // Proses Repost Video
+            // Upload Video
             let media = await quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 video: media, 
-                caption: isiCaption,
-                mentions: jidTarget 
+                caption: finalCaption,
+                mentions: selfMention 
             })
-            m.reply('✅ Berhasil repost video dengan penyebutan!')
+            m.reply('✅ Sukses! Video berhasil dibagikan ulang ke Story.')
 
         } else {
-            // Proses Repost Teks
-            const teksAsal = quoted.text || quoted.caption || quoted.conversation || ''
+            // Upload Teks (Jika merepost pesan teks)
+            const teksAsli = quoted.text || quoted.caption || quoted.conversation || ''
+            if (!teksAsli && !text) return m.reply('Teks tidak ditemukan untuk di-up!')
+            
             await RAEHAN2GD.sendMessage('status@broadcast', { 
-                text: `${teksAsal}\n\n${isiCaption}`,
-                mentions: jidTarget 
+                text: teksAsli ? `${teksAsli}\n\n${finalCaption}` : finalCaption,
+                mentions: selfMention 
             })
-            m.reply('✅ Berhasil repost teks dengan penyebutan!')
+            m.reply('✅ Sukses! Status teks berhasil dibuat dengan mention.')
         }
+
     } catch (err) {
         console.error(err)
-        m.reply('Gagal membagikan ulang. Pastikan sesi bot stabil.')
+        m.reply(`❌ Terjadi Kesalahan: ${err.message}`)
     }
 }
 break
-
 		
 		/*case 'insta' : case 'instagram' :  {
 			const hanzzz =`
