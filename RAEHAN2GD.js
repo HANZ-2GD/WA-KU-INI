@@ -203,61 +203,7 @@ case 'setppgchanz': {
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
-		case 'ups':
-case 'upstory': {
-    // Penggunaan: .ups 62812345678|Terima kasih ya!
-    if (!q.includes('|')) return reply(`Format salah!\nContoh: *${prefix + command}* nomor|caption`);
-
-    // Ambil input nomor dan caption
-    let [target, ...teks] = q.split('|');
-    let caption = teks.join('|').trim();
-    let targetJid = target.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
-
-    // Cek apakah ada gambar yang dikirim atau di-reply
-    let quoted = m.quoted ? m.quoted : m;
-    let mime = (quoted.msg || quoted).mimetype || '';
-
-    if (/image/.test(mime)) {
-        reply('⏳ Sedang memproses upload story...');
-
-        try {
-            // Download media menjadi buffer
-            let media = await quoted.download();
-
-            // Kirim ke status@broadcast
-            await RAEHAN2GD.sendMessage('status@broadcast', {
-                image: media,
-                caption: caption,
-                contextInfo: {
-                    // BAGIAN PENTING: Membuat efek "Fake Reshare"
-                    quotedMessage: {
-                        extendedTextMessage: {
-                            text: "Menyebut Anda dalam cerita", // Teks indikator mention asli WA
-                            fontStyle: 1
-                        }
-                    },
-                    participant: targetJid, // Orang yang seolah-olah me-mention
-                    remoteJid: 'status@broadcast', // Harus ini agar muncul di baki status
-                    
-                    // Metadata tambahan agar terlihat official
-                    forwardingScore: 1,
-                    isForwarded: true,
-                    mentionedJid: [RAEHAN2GD.user.id.split(':')[0] + '@s.whatsapp.net']
-                }
-            }, {
-                // Biarkan kosong agar mengikuti privasi default WA (kontak saya)
-                statusJidList: [] 
-            });
-
-            reply('✅ Story "Fake Reshare" berhasil diunggah!');
-        } catch (err) {
-            console.error(err);
-            reply('❌ Gagal mengunggah story. Pastikan library Baileys kamu versi terbaru.');
-        }
-    } else {
-        reply('Silakan reply atau kirim gambar yang ingin dijadikan story!');
-    }}
-    break
+		
 																	   
 		
 		/*case 'insta' : case 'instagram' :  {
