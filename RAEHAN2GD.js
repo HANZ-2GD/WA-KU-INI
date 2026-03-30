@@ -203,7 +203,56 @@ case 'setppgchanz': {
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
+case 'upsw':
+case 'upstory': {
+    // Pastikan hanya owner (Hanz) yang bisa pakai
+    if (!isCreator) return m.reply('Maaf, fitur ini khusus Owner!')
+    if (!m.quoted && !text) return m.reply(`Reply pesan/media atau ketik teks yang ingin dijadikan SW!\nContoh: ${prefix + command} Halo @6281234xxx`)
 
+    const mime = (quoted.msg || quoted).mimetype || ''
+    
+    // Ambil teks dari caption (jika ada) atau teks biasa
+    const textSW = text || quoted.text || quoted.caption || quoted.conversation || ''
+    
+    // PENANGKAP MENTION: Ambil tag dari pesan yang diketik atau dari pesan yang di-reply
+    const mentionsSW = m.mentionedJid && m.mentionedJid.length > 0 ? m.mentionedJid : (quoted.mentionedJid || [])
+
+    try {
+        if (/image/.test(mime)) {
+            let media = await quoted.download()
+            await RAEHAN2GD.sendMessage('status@broadcast', { 
+                image: media, 
+                caption: textSW, 
+                mentions: mentionsSW // Masukkan penyebutan ke status
+            })
+            m.reply(`Sukses membagikan gambar ke Status WA dengan ${mentionsSW.length} penyebutan!`)
+            
+        } else if (/video/.test(mime)) {
+            let media = await quoted.download()
+            await RAEHAN2GD.sendMessage('status@broadcast', { 
+                video: media, 
+                caption: textSW, 
+                mentions: mentionsSW // Masukkan penyebutan ke status
+            })
+            m.reply(`Sukses membagikan video ke Status WA dengan ${mentionsSW.length} penyebutan!`)
+            
+        } else {
+            // Jika hanya berupa teks murni
+            let txt = textSW || budy || ''
+            if (!txt) return m.reply('Teksnya kosong, apa yang mau diupload?')
+            
+            await RAEHAN2GD.sendMessage('status@broadcast', { 
+                text: txt, 
+                mentions: mentionsSW // Masukkan penyebutan ke status
+            })
+            m.reply(`Sukses membagikan teks ke Status WA dengan ${mentionsSW.length} penyebutan!`)
+        }
+    } catch (err) {
+        console.error(err)
+        m.reply('Gagal mengupload status. Pastikan media/pesan belum kadaluarsa.')
+    }
+}
+break
 
 		
 		/*case 'insta' : case 'instagram' :  {
