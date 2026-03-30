@@ -202,60 +202,60 @@ case 'setppgchanz': {
 			
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
-
 case 'upsw':
 case 'upstory': {
-    // 1. Cek apakah yang akses adalah Hanz (Owner)
+    // 1. Validasi Owner (Hanz)
     if (!isCreator) return m.reply('Fitur ini khusus untuk Owner!')
     
-    // 2. Pastikan ada status/pesan yang di-reply
-    if (!m.quoted) return m.reply(`Reply status orang yang mention kamu, lalu ketik ${prefix + command}`)
+    // 2. Cek apakah ada status/pesan yang di-reply (quoted)
+    if (!m.quoted) return m.reply(`Reply status/pesan orang yang mention kamu, lalu ketik ${prefix + command}`)
 
     const mime = (quoted.msg || quoted).mimetype || ''
     
-    // 3. Set Caption otomatis sesuai permintaanmu
-    // Jika kamu ketik teks tambahan, akan muncul di atas "dibagikan ulang..."
-    const captionOtomatis = text ? `${text}\n\ndibagikan ulang dari penyebutan` : 'dibagikan ulang dari penyebutan'
+    // 3. Setting Caption sesuai permintaan
+    // Jika kamu tambah teks setelah command, akan muncul di atas caption wajib
+    const isiCaption = text ? `${text}\n\ndibagikan ulang dari penyebutan` : 'dibagikan ulang dari penyebutan'
     
-    // 4. Ambil JID orang yang mention untuk di-tag balik di SW
-    // Ini agar notifikasi "Seseorang menyebut Anda" muncul di WA mereka
-    const jidPenyebut = [m.sender] 
+    // 4. Ambil JID pengirim untuk di-tag balik (mentions)
+    const jidTarget = [m.sender] 
 
     try {
-        // 5. Anti-Gaib: Subscribe ke jalur Status
+        // 5. Anti-Gaib: Kirim sinyal kehadiran ke jalur Status
         await RAEHAN2GD.presenceSubscribe('status@broadcast')
-        await RAEHAN2GD.sendPresenceUpdate('composing', 'status@broadcast')
+        await RAEHAN2GD.sendPresenceUpdate('recording', 'status@broadcast')
 
         if (/image/.test(mime)) {
+            // Proses Repost Gambar
             let media = await quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 image: media, 
-                caption: captionOtomatis,
-                mentions: jidPenyebut 
+                caption: isiCaption,
+                mentions: jidTarget 
             })
-            m.reply('✅ Berhasil repost gambar dari penyebutan!')
+            m.reply('✅ Berhasil repost gambar dengan penyebutan!')
 
         } else if (/video/.test(mime)) {
+            // Proses Repost Video
             let media = await quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 video: media, 
-                caption: captionOtomatis,
-                mentions: jidPenyebut 
+                caption: isiCaption,
+                mentions: jidTarget 
             })
-            m.reply('✅ Berhasil repost video dari penyebutan!')
+            m.reply('✅ Berhasil repost video dengan penyebutan!')
 
         } else {
-            // Jika status berupa teks
-            const teksAsli = quoted.text || quoted.caption || ''
+            // Proses Repost Teks
+            const teksAsal = quoted.text || quoted.caption || quoted.conversation || ''
             await RAEHAN2GD.sendMessage('status@broadcast', { 
-                text: `${teksAsli}\n\n${captionOtomatis}`,
-                mentions: jidPenyebut 
+                text: `${teksAsal}\n\n${isiCaption}`,
+                mentions: jidTarget 
             })
-            m.reply('✅ Berhasil repost teks dari penyebutan!')
+            m.reply('✅ Berhasil repost teks dengan penyebutan!')
         }
     } catch (err) {
         console.error(err)
-        m.reply('Gagal membagikan ulang. Pastikan media masih bisa diakses.')
+        m.reply('Gagal membagikan ulang. Pastikan sesi bot stabil.')
     }
 }
 break
