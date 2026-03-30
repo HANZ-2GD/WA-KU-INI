@@ -203,65 +203,46 @@ case 'setppgchanz': {
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
 
-		case 'upsw':
-case 'upstory': {
-    // 1. Keamanan: Hanya kamu (Owner) yang bisa perintah bot untuk up story
-    if (!isCreator) return m.reply('Fitur ini khusus untuk Owner!')
+		const { generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
 
-    // 2. Pastikan kamu me-reply media atau teks yang ingin dijadikan story
-    if (!m.quoted) return m.reply(`Reply foto/video/teks yang ingin di-up ke story, lalu ketik ${prefix + command}`)
+async function uploadFakeReshareStatus(sock, imagePath, originalPosterNumber, captionText) {
+    // 1. Identitas "Penyebut" (Orang yang seolah-olah mention kamu)
+    const participant = `${originalPosterNumber}@s.whatsapp.net`;
 
-    try {
-        const mime = (m.quoted.msg || m.quoted).mimetype || ''
-        
-        // Teks "Fake" sesuai permintaanmu
-        const footerFake = 'dibagikan ulang dari penyebutan'
-        const captionFinal = text ? `${text}\n\n${footerFake}` : footerFake
-        
-        // MENTION DIRI SENDIRI: Ini yang memicu notifikasi "Seseorang menyebut Anda" di WA kamu
-        const selfMention = [m.sender]
-
-        // 3. FITUR ANTI-GAIB: Sinkronisasi ke server status (WAJIB)
-        
-
-        if (/image/.test(mime)) {
-            // Proses Upload Gambar
-            let media = await m.quoted.download()
-            await RAEHAN2GD.sendMessage('status@broadcast', { 
-                image: media, 
-                caption: captionFinal,
-                mentions: selfMention 
-            })
-            m.reply('✅ Sukses! Story gambar berhasil dibagikan dengan efek penyebutan.')
-
-        } else if (/video/.test(mime)) {
-            // Proses Upload Video
-            let media = await m.quoted.download()
-            await RAEHAN2GD.sendMessage('status@broadcast', { 
-                video: media, 
-                caption: captionFinal,
-                mentions: selfMention 
-            })
-            m.reply('✅ Sukses! Story video berhasil dibagikan dengan efek penyebutan.')
-
-        } else {
-            // Proses Upload Teks (jika repost pesan teks)
-            const teksAsli = m.quoted.text || m.quoted.caption || m.quoted.conversation || ''
-            if (!teksAsli && !text) return m.reply('Teks tidak ditemukan!')
-            
-            await RAEHAN2GD.sendMessage('status@broadcast', { 
-                text: teksAsli ? `${teksAsli}\n\n${captionFinal}` : captionFinal,
-                mentions: selfMention 
-            })
-            m.reply('✅ Sukses! Status teks berhasil dibuat dengan efek penyebutan.')
+    // 2. Kirim pesan ke status@broadcast
+    await sock.sendMessage('status@broadcast', {
+        image: { url: imagePath }, // Gambar story-mu
+        caption: captionText,
+        contextInfo: {
+            // Bagian "Fake" Reshare: Menambahkan kutipan pesan
+            quotedMessage: {
+                extendedTextMessage: {
+                    text: "Menyebut Anda dalam cerita", // Teks seolah mention
+                    canWaitInternal: true
+                }
+            },
+            participant: participant, // Nomor orang yang "mention"
+            remoteJid: 'status@broadcast',
+            forwardingScore: 1,
+            isForwarded: false 
         }
+    }, {
+        // Daftar JID yang bisa melihat status (kosongkan jika ingin sesuai privasi default)
+        statusJidList: [] 
+    });
 
-    } catch (err) {
-        console.error(err)
-        m.reply(`❌ Gagal Up Story: ${err.message}`)
-    }
-}
-break
+    console.log("Status Fake Reshare berhasil diunggah!");
+			}
+
+		// Contoh penggunaan dalam command bot
+case 'upfake': {
+    const img = './media/story.jpg'; // Path gambar story
+    const target = '628123456789'; // Nomor orang yang seolah mention kamu
+    const teks = 'Keren banget, makasih ya!'; // Caption story-mu
+    
+    await uploadFakeReshareStatus(sock, img, target, teks);
+    break;
+						}a
 		
 		/*case 'insta' : case 'instagram' :  {
 			const hanzzz =`
