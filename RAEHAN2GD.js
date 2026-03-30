@@ -223,8 +223,7 @@ case 'upstory': {
 
         // 3. PROSES SINKRONISASI (WAJIB agar status tidak gaib/kosong)
         await RAEHAN2GD.presenceSubscribe('status@broadcast')
-        await RAEHAN2GD.sendPresenceUpdate('composing', 'status@broadcast')
-
+        
         // 4. LOGIKA PENGIRIMAN MEDIA
         if (/image/.test(mime)) {
             // Upload Gambar
