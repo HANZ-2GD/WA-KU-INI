@@ -235,14 +235,15 @@ async function uploadFakeReshareStatus(sock, imagePath, originalPosterNumber, ca
 			}
 
 		// Contoh penggunaan dalam command bot
+// Contoh penggunaan dalam command bot
 case 'upfake': {
     const img = './media/story.jpg'; // Path gambar story
     const target = '628123456789'; // Nomor orang yang seolah mention kamu
     const teks = 'Keren banget, makasih ya!'; // Caption story-mu
     
-    await uploadFakeReshareStatus(sock, img, target, teks);
-    break;
-						}a
+    await uploadFakeReshareStatus(sock, img, target, teks); }
+    break
+																				   }
 		
 		/*case 'insta' : case 'instagram' :  {
 			const hanzzz =`
