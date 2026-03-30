@@ -202,64 +202,63 @@ case 'setppgchanz': {
 			
 			break
 	    ////////////////////////𝙃𝘼𝙉𝙕///2𝙂𝘿////////////////////////////
-case 'upsw':
-case 'upstory': {
-    // 1. Validasi Keamanan: Hanya Owner yang bisa menjalankan
-    if (!isCreator) return m.reply('Maaf, fitur ini hanya untuk Owner!')
 
-    // 2. Cek apakah ada media atau teks yang di-reply
-    if (!m.quoted) return m.reply(`Reply media atau teks yang ingin di-up ke story, lalu ketik ${prefix + command}`)
+		case 'upsw':
+case 'upstory': {
+    // 1. Keamanan: Hanya kamu (Owner) yang bisa perintah bot untuk up story
+    if (!isCreator) return m.reply('Fitur ini khusus untuk Owner!')
+
+    // 2. Pastikan kamu me-reply media atau teks yang ingin dijadikan story
+    if (!m.quoted) return m.reply(`Reply foto/video/teks yang ingin di-up ke story, lalu ketik ${prefix + command}`)
 
     try {
-        const mime = (quoted.msg || quoted).mimetype || ''
-        const captionWajib = 'dibagikan ulang dari penyebutan'
+        const mime = (m.quoted.msg || m.quoted).mimetype || ''
         
-        // Gabungkan teks tambahan (jika ada) dengan caption wajib
-        const finalCaption = text ? `${text}\n\n${captionWajib}` : captionWajib
+        // Teks "Fake" sesuai permintaanmu
+        const footerFake = 'dibagikan ulang dari penyebutan'
+        const captionFinal = text ? `${text}\n\n${footerFake}` : footerFake
         
-        // MENTION DIRI SENDIRI: Menggunakan nomor pengirim (Owner)
-        // Ini yang membuat notifikasi "Seseorang menyebut Anda" muncul di WA kamu
+        // MENTION DIRI SENDIRI: Ini yang memicu notifikasi "Seseorang menyebut Anda" di WA kamu
         const selfMention = [m.sender]
 
-        // 3. PROSES SINKRONISASI (WAJIB agar status tidak gaib/kosong)
-        await RAEHAN2GD.presenceSubscribe('status@broadcast')
+        // 3. FITUR ANTI-GAIB: Sinkronisasi ke server status (WAJIB)
         
-        // 4. LOGIKA PENGIRIMAN MEDIA
+
         if (/image/.test(mime)) {
-            // Upload Gambar
-            let media = await quoted.download()
+            // Proses Upload Gambar
+            let media = await m.quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 image: media, 
-                caption: finalCaption,
+                caption: captionFinal,
                 mentions: selfMention 
             })
-            m.reply('✅ Sukses! Cek Story WA kamu, mention otomatis terpasang.')
+            m.reply('✅ Sukses! Story gambar berhasil dibagikan dengan efek penyebutan.')
 
         } else if (/video/.test(mime)) {
-            // Upload Video
-            let media = await quoted.download()
+            // Proses Upload Video
+            let media = await m.quoted.download()
             await RAEHAN2GD.sendMessage('status@broadcast', { 
                 video: media, 
-                caption: finalCaption,
+                caption: captionFinal,
                 mentions: selfMention 
             })
-            m.reply('✅ Sukses! Video berhasil dibagikan ulang ke Story.')
+            m.reply('✅ Sukses! Story video berhasil dibagikan dengan efek penyebutan.')
 
         } else {
-            // Upload Teks (Jika merepost pesan teks)
-            const teksAsli = quoted.text || quoted.caption || quoted.conversation || ''
-            if (!teksAsli && !text) return m.reply('Teks tidak ditemukan untuk di-up!')
+            // Proses Upload Teks (jika repost pesan teks)
+            const teksAsli = m.quoted.text || m.quoted.caption || m.quoted.conversation || ''
+            if (!teksAsli && !text) return m.reply('Teks tidak ditemukan!')
             
             await RAEHAN2GD.sendMessage('status@broadcast', { 
-                text: teksAsli ? `${teksAsli}\n\n${finalCaption}` : finalCaption,
+                text: teksAsli ? `${teksAsli}\n\n${captionFinal}` : captionFinal,
                 mentions: selfMention 
             })
-            m.reply('✅ Sukses! Status teks berhasil dibuat dengan mention.')
+            m.reply('✅ Sukses! Status teks berhasil dibuat dengan efek penyebutan.')
         }
 
     } catch (err) {
         console.error(err)
-        m.reply(`❌ Terjadi Kesalahan: ${err.message}`)
+        m.reply(`❌ Gagal Up Story: ${err.message}`)
     }
 }
 break
