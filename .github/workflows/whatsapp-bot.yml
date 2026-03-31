@@ -2,8 +2,7 @@ aname: WhatsApp Bot Runner
 
 on:
   workflow_dispatch: # Memungkinkan kamu menjalankan bot secara manual
-  schedule:
-    - cron: '0 * * * *' # Otomatis restart setiap 6 jam (untuk menghindari limit GitHub)
+  # Otomatis restart setiap 6 jam (untuk menghindari limit GitHub)
 
 jobs:
   build:
