@@ -1,4 +1,4 @@
-aname: WhatsApp Bot Runner
+name: WhatsApp Bot Runner
 
 on:
   workflow_dispatch: # Memungkinkan kamu menjalankan bot secara manual
