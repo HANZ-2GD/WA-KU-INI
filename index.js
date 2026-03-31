@@ -25,7 +25,11 @@ let phoneNumber;
 // Setel ke 0 untuk tidak terbatas, atau angka yang lebih tinggi (misal: 20)
 process.setMaxListeners(0); 
 
-
+// Restart otomatis setiap 30 menit (1800000 milidetik)
+setTimeout(() => {
+    console.log("Bot akan restart otomatis untuk menjaga performa...");
+    process.exit(); 
+}, 30 * 60 * 1000);
 
 const userInfoSyt = () => {
 	try {
