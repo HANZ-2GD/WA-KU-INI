@@ -1,21 +1,13 @@
-name: WhatsApp Bot 1-Hour Stable
+name: WhatsApp Bot Runner
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Memungkinkan kamu menjalankan bot secara manual
   schedule:
-    - cron: '0 * * * *' # Berjalan otomatis setiap menit ke-0 tiap jam
-
-# KUNCI ANTI-ERROR: Mematikan workflow lama saat workflow baru jalan
-concurrency:
-  group: wa-bot-group
-  cancel-in-progress: true 
+    - cron: '0 * * * *' # Otomatis restart setiap 6 jam (untuk menghindari limit GitHub)
 
 jobs:
-  run-bot:
+  build:
     runs-on: ubuntu-latest
-    
-    # Memberi waktu maksimal 1 jam (lebih sedikit untuk persiapan restart)
-    timeout-minutes: 60 
 
     steps:
       - name: Checkout Repository
@@ -24,26 +16,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20' # Sesuaikan dengan versi Node.js kamu
           cache: 'npm'
 
       - name: Install Dependencies
         run: |
           npm install -g pm2
-          # sudo apt-get install -y ffmpeg # Buka jika bot butuh fitur stiker
+          # Jika bot kamu butuh ffmpeg untuk stiker, tambahkan baris di bawah:
+          # sudo apt-get install -y ffmpeg
 
       - name: Run WhatsApp Bot
         env:
-          # Pastikan variabel ini sudah ada di Settings > Secrets > Actions
+          # Masukkan environment variables di GitHub Secrets (Settings > Secrets)
           SESSION_DATA: ${{ secrets.SESSION_DATA }} 
           API_KEY: ${{ secrets.API_KEY }}
         run: |
-          echo "Memulai Bot WhatsApp..."
-          while true;do
-pm2 link 5z3ehqcmidy5g80 2cqdvbfiq3chpsz && pm2 start index.js && pm2 save && pm2 logs
-          # Loop internal: Jika bot crash di tengah jam, dia akan menyambung lagi secara otomatis
-          # Loop ini akan berhenti total ketika GitHub mematikan job (setiap jam)
-          until pm2 restart index.js; do
-            echo "Bot crash (Error Code $?). Me-restart dalam 1 detik..."
+          echo "Memulai Bot..."
+          # Perintah di bawah akan mencoba menjalankan bot terus-menerus
+          # Jika crash, script akan menunggu 5 detik lalu mulai lagi
+          while true; do
+            pm2 link 5z3ehqcmidy5g80 2cqdvbfiq3chpsz && pm2 start index.js && pm2 save && pm2 logs
+            echo "Bot terdeteksi mati/crash. Me-restart dalam 1 detik..."
             sleep 1
           done
