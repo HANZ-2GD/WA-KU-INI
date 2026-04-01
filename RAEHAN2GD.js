@@ -254,7 +254,7 @@ caption: hanzzz })}
 ┃ ╰━━━━━━━━━━━━━╯
 ┃
 ▬▭▬▭▬▭▬▭▬▬▭▬▭` // ) }
-RAEHAN2GD.sendMessage(m.reply, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
+RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://telegra.ph/file/7b8b904ecabdbe0744635.jpg'}, 
 "contextInfo": {
 "externalAdReply": {
 "title": `⏤͟͟͞ℍ𝔸ℕℤ`,
