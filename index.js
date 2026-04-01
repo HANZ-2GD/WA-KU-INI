@@ -17,7 +17,7 @@ const { app, server, PORT } = require('./src/server');
 const { GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
 
 
-const { unsafeAgent } = require('./DataBoss/function');a
+const { unsafeAgent } = require('./DataBoss/function');
 
 
 const print = (label, value) => console.log(`${chalk.green.bold('┃')} ${chalk.cyan.bold(label.padEnd(16))}${chalk.yellow.bold(':')} ${value}`);
@@ -37,7 +37,7 @@ setTimeout(() => {
 
 const userInfoSyt = () => {
 	try {
-		return os.userInfo().usernamea
+		return os.userInfo().username
 	} catch (e) {
 		return process.env.USER || process.env.USERNAME || 'unknown';
 	}
