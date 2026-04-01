@@ -248,7 +248,7 @@ async function startRAEHAN2GDBot() {
 	 
 	RAEHAN2GD.ev.on('call', async (call) => {
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
-		if (global.db?.set[botNumber]?.anticall) {
+		 {
 			for (let id of call) {
 				if (id.status === 'offer') {
 					let msg = await RAEHAN2GD.sendMessage(id.from, { text: `╭━━━━━━━━━━━━━╾•\n┃𝙷𝙰𝙻𝙻𝙾 𝙼𝙰𝚂 / 𝙼𝙱𝙰𝙺\n┃ @${id.from.split('@')[0]}\n┣━━━━━━━━━━━━━━•\n┃ 𝘗𝘈𝘕𝘎𝘎𝘐𝘓𝘈𝘕  ${id.isVideo ? 'Video' : 'Suara'}\n┣━━━━━━━━━━━━━━•\n┃𝙼𝚊𝚊𝚏 𝙼𝚊𝚜 / 𝙼𝚋𝚊𝚔\n┃𝙿𝚎𝚖𝚒𝚕𝚒𝚔 𝚜𝚎𝚍𝚊𝚗𝚐\n┃𝚃𝚒𝚍𝚊𝚔 𝚖𝚎𝚖𝚋𝚊𝚠𝚊\n┃𝙷𝙿 / 𝙷𝚊𝚗𝚍𝚙𝚑𝚘𝚗𝚎\n┃𝚃𝚘𝚕𝚘𝚗𝚐\n┃𝚃𝚒𝚗𝚐𝚐𝚊𝚕𝚔𝚊𝚗 𝚙𝚎𝚜𝚊𝚗\n┣━━━━━━━━━━━━━━•\n┃ɪɴɪ  ᴀᴅᴀʟᴀʜ  ᴋᴇᴄᴇʀᴅᴀsᴀɴ  ʙᴜᴀᴛᴀɴ\n┃ᴅɪʙᴜᴀᴛ  ᴏʟᴇʜ  ʀᴀᴇʜᴀɴ\n╰━━━━━━━━━━━━━━╯`, mentions: [id.from]});
