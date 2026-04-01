@@ -11,9 +11,18 @@ const { exec } = require('child_process');
 const { parsePhoneNumber } = require('awesome-phonenumber');
 const { default: WAConnection, useMultiFileAuthState, Browsers, DisconnectReason, makeCacheableSignalKeyStore, fetchLatestWaWebVersion, jidNormalizedUser } = require('baileys');
 
+
 const { dataBase } = require('./src/database');
 const { app, server, PORT } = require('./src/server');
-const { unsafeAgent } = require('./DataBoss/function');
+const { GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
+const { getRandom, getBuffer, fetchJson, runtime, clockString, sleep, isUrl, formatDate, formatp, generateProfilePicture, errorCache, normalize, updateSettings, parseMention, fixBytes, similarity, pickRandom, tarBackup, unsafeAgent } = require('./DataBoss/function');
+	const hari = moment.tz('Asia/Jakarta').locale('id').format('dddd');
+		const tanggal = moment.tz('Asia/Jakarta').locale('id').format('DD/MM/YYYY');		
+		const jamjak = moment.tz('Asia/Jakarta').locale('id').format('HH:mm:ss');
+		const jammak = moment.tz('Asia/Makassar').locale('id').format('HH:mm:ss');
+		const jamjay = moment.tz('Asia/Jayapura').locale('id').format('HH:mm:ss');
+
+
 const { GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
 
 const print = (label, value) => console.log(`${chalk.green.bold('┃')} ${chalk.cyan.bold(label.padEnd(16))}${chalk.yellow.bold(':')} ${value}`);
