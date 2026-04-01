@@ -243,53 +243,29 @@ async function startRAEHAN2GDBot() {
 			RAEHAN2GD.ev.flush()
 		}
 	});
+
+
+
+	 
 	
-	RAEHAN2GD.ev.on('call', async (callData) => {
-    const botNumber = jidNormalizedUser(RAEHAN2GD.user.id);
-    const isAnticallActive = global.db?.set?.[botNumber]?.anticall;
+	 RAEHAN2GD.ev.on('call', async (call) => {
+		
+		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
+		 {
+			for (let id of call) {
+				
+				if (id.status === 'offer') {
+					
+					let msg = await RAEHAN2GD.sendMessage(id.from, { text: `╭━━━━━━━━━━━━━╾•\n┃𝙷𝙰𝙻𝙻𝙾 𝙼𝙰𝚂 / 𝙼𝙱𝙰𝙺\n┃ @${id.from.split('@')[0]}\n┣━━━━━━━━━━━━━━•\n┃ 𝘗𝘈𝘕𝘎𝘎𝘐𝘓𝘈𝘕  ${id.isVideo ? 'Video' : 'Suara'}\n┣━━━━━━━━━━━━━━•\n┃𝙼𝚊𝚊𝚏 𝙼𝚊𝚜 / 𝙼𝚋𝚊𝚔\n┃𝙿𝚎𝚖𝚒𝚕𝚒𝚔 𝚜𝚎𝚍𝚊𝚗𝚐\n┃𝚃𝚒𝚍𝚊𝚔 𝚖𝚎𝚖𝚋𝚊𝚠𝚊\n┃𝙷𝙿 / 𝙷𝚊𝚗𝚍𝚙𝚑𝚘𝚗𝚎\n┃𝚃𝚘𝚕𝚘𝚗𝚐\n┃𝚃𝚒𝚗𝚐𝚐𝚊𝚕𝚔𝚊𝚗 𝚙𝚎𝚜𝚊𝚗\n┣━━━━━━━━━━━━━━•\n┃ɪɴɪ  ᴀᴅᴀʟᴀʜ  ᴋᴇᴄᴇʀᴅᴀsᴀɴ  ʙᴜᴀᴛᴀɴ\n┃ᴅɪʙᴜᴀᴛ  ᴏʟᴇʜ  ʀᴀᴇʜᴀɴ\n╰━━━━━━━━━━━━━━╯`, mentions: [id.from]});
+					
+					await RAEHAN2GD.rejectCall(id.id, id.from)
+				}
+			}
+		}
+	});   
 
-    if (!isAnticallActive) return;
 
-    // 1. DAFTAR NOMOR OWNER (HANYA ANGKA SAJA, JANGAN PAKAI @s.whatsapp.net)
-    // Masukkan semua nomor owner di sini agar lebih aman
-    let whitelistNumbers = [
-        '6285820054587', // Ganti dengan nomor owner 1
-        '6289876543210', // Ganti dengan nomor owner 2
-        '6285555555555'  // Tambahkan lagi jika perlu
-    ];
 
-    for (let node of callData) {
-        if (node.status === 'offer') {
-            // 2. AMBIL NOMOR PENELEPON DAN BERSIHKAN (HANYA AMBIL ANGKA)
-            const callerId = node.from; // Contoh: 62812345@s.whatsapp.net
-            const callerNumber = callerId.split('@')[0].split(':')[0]; // Hasil: 62812345
-
-            // 3. CEK APAKAH NOMOR PENELEPON ADA DI WHITELIST (Pencocokan Angka Saja)
-            const isOwner = whitelistNumbers.some(num => callerNumber === num.replace(/[^0-9]/g, ''));
-
-            if (isOwner) {
-                console.log(chalk.green.bold(`[CALL] Owner (${callerNumber}) memanggil, biarkan masuk...`));
-                continue; // STOP DI SINI, JANGAN TOLAK
-            }
-
-            // 4. JIKA BUKAN OWNER, BARU TOLAK
-            try {
-                // Eksekusi penolakan
-                await RAEHAN2GD.rejectCall(node.id, node.from);
-                
-                // Kirim pesan (Gunakan callerId yang asli untuk kirim pesan)
-                await RAEHAN2GD.sendMessage(callerId, { 
-                    text: `*AUTO REJECT CALL*\n\nMaaf @${callerNumber}, nomor kamu tidak terdaftar di VIP. Panggilan ditolak otomatis.`,
-                    mentions: [callerId]
-                });
-
-                console.log(chalk.red.bold(`[CALL] Panggilan dari ${callerNumber} ditolak.`));
-            } catch (err) {
-                console.log("Gagal mereject: ", err);
-            }
-        }
-    }
-});
 	
 	RAEHAN2GD.ev.on('messages.upsert', async (message) => {
 		await MessagesUpsert(RAEHAN2GD, message, ganteng);
