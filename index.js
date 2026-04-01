@@ -16,6 +16,7 @@ const { dataBase } = require('./src/database');
 const { app, server, PORT } = require('./src/server');
 const { GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
 
+setInterval(() => {
 
 const moment = require('moment-timezone');
 const { getRandom, getBuffer, fetchJson, runtime, clockString, sleep, isUrl, formatDate, formatp, generateProfilePicture, errorCache, normalize, updateSettings, parseMention, fixBytes, similarity, pickRandom, tarBackup, unsafeAgent } = require('./DataBoss/function');
@@ -25,7 +26,8 @@ const { getRandom, getBuffer, fetchJson, runtime, clockString, sleep, isUrl, for
 		const jammak = moment.tz('Asia/Makassar').locale('id').format('HH:mm:ss');
 		const jamjay = moment.tz('Asia/Jayapura').locale('id').format('HH:mm:ss');
 
-
+}, 1000); // Update setiap 1000ms (1 detik)
+
 
 const print = (label, value) => console.log(`${chalk.green.bold('┃')} ${chalk.cyan.bold(label.padEnd(16))}${chalk.yellow.bold(':')} ${value}`);
 const pairingCode = process.argv.includes('--qr') ? false : process.argv.includes('--pairing-code') || global.pairing_code;
