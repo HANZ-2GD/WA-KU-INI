@@ -247,10 +247,22 @@ async function startRAEHAN2GDBot() {
 	
 	 
 	RAEHAN2GD.ev.on('call', async (call) => {
+		// 2. DAFTAR NOMOR YANG DIIZINKAN (WHITELIST)
+    // Masukkan nomor dengan format kode negara + @s.whatsapp.net
+    const allowedNumbers = [
+        '6282350741995@s.whatsapp.net', // Ganti dengan nomor 1
+        '6285820054587@s.whatsapp.net', // Ganti dengan nomor 2
+        // Jika kamu punya variabel global.owner, bisa juga ditambahkan seperti ini:
+        // `${global.owner}@s.whatsapp.net`
+    ];
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
 		 {
 			for (let id of call) {
 				if (id.status === 'offer') {
+					if (allowedNumbers.includes(callerId)) {
+                console.log(chalk.greenBright(`[CALL] Panggilan dari nomor VIP / Owner (${callerId.split('@')[0]}) dibiarkan masuk.`));
+                continue; // Hentikan proses di sini, jangan tolak panggilannya
+					}
 					let msg = await RAEHAN2GD.sendMessage(id.from, { text: `╭━━━━━━━━━━━━━╾•\n┃𝙷𝙰𝙻𝙻𝙾 𝙼𝙰𝚂 / 𝙼𝙱𝙰𝙺\n┃ @${id.from.split('@')[0]}\n┣━━━━━━━━━━━━━━•\n┃ 𝘗𝘈𝘕𝘎𝘎𝘐𝘓𝘈𝘕  ${id.isVideo ? 'Video' : 'Suara'}\n┣━━━━━━━━━━━━━━•\n┃𝙼𝚊𝚊𝚏 𝙼𝚊𝚜 / 𝙼𝚋𝚊𝚔\n┃𝙿𝚎𝚖𝚒𝚕𝚒𝚔 𝚜𝚎𝚍𝚊𝚗𝚐\n┃𝚃𝚒𝚍𝚊𝚔 𝚖𝚎𝚖𝚋𝚊𝚠𝚊\n┃𝙷𝙿 / 𝙷𝚊𝚗𝚍𝚙𝚑𝚘𝚗𝚎\n┃𝚃𝚘𝚕𝚘𝚗𝚐\n┃𝚃𝚒𝚗𝚐𝚐𝚊𝚕𝚔𝚊𝚗 𝚙𝚎𝚜𝚊𝚗\n┣━━━━━━━━━━━━━━•\n┃ɪɴɪ  ᴀᴅᴀʟᴀʜ  ᴋᴇᴄᴇʀᴅᴀsᴀɴ  ʙᴜᴀᴛᴀɴ\n┃ᴅɪʙᴜᴀᴛ  ᴏʟᴇʜ  ʀᴀᴇʜᴀɴ\n╰━━━━━━━━━━━━━━╯`, mentions: [id.from]});
 					
 					await RAEHAN2GD.rejectCall(id.id, id.from)
