@@ -35,13 +35,7 @@ setTimeout(() => {
     process.exit(); 
 }, 30 * 60 * 1000);
 
-const userInfoSyt = () => {
-	try {
-		return os.userInfo().username
-	} catch (e) {
-		return process.env.USER || process.env.USERNAME || 'unknown';
-	}
-}
+
 
 global.fetchApi = async (path='/', data={}, options={}) => {
   return new Promise(async (resolve, reject) => {
