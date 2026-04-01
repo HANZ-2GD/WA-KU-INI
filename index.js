@@ -245,50 +245,73 @@ async function startRAEHAN2GDBot() {
 	});
 	
 	
-	 RAEHAN2GD.ev.on('call', async (calls) => {
-    // 1. Ambil status setting anticall
+	RAEHAN2GD.ev.on('call', async (callData) => {
+    // 1. Cek apakah fitur anticall menyala di database
     const botNumber = jidNormalizedUser(RAEHAN2GD.user.id);
     const isAnticallActive = global.db?.set?.[botNumber]?.anticall;
 
-    if (!isAnticallActive) return; // Jika anticall mati, biarkan saja
+    // Jika anticall mati, abaikan fungsi ini (biarkan semua panggilan masuk)
+    if (!isAnticallActive) return;
 
-    // 2. DAFTAR NOMOR YANG DIIZINKAN (WHITELIST)
-    // Masukkan nomor dengan format kode negara + @s.whatsapp.net
-    const allowedNumbers = [
-        '6282350741995@s.whatsapp.net', // Ganti dengan nomor 1
-        '6285820054587@s.whatsapp.net', // Ganti dengan nomor 2
-        // Jika kamu punya variabel global.owner, bisa juga ditambahkan seperti ini:
-        // `${global.owner}@s.whatsapp.net`
+    // 2. DAFTAR NOMOR ANTI-TOLAK (WHITELIST)
+    // WAJIB gunakan format: kode negara + nomor + @s.whatsapp.net
+    let allowedNumbers = [
+        '6282350741995@s.whatsapp.net', // Ganti nomor Owner 1
+        '6285820054587@s.whatsapp.net'  // Ganti nomor Owner 2
     ];
 
-    for (let call of calls) {
-        if (call.status === 'offer') {
-            // Bersihkan format ID penelepon agar akurat saat dicocokkan
-            const callerId = jidNormalizedUser(call.from);
+    // (Opsional) Jika kamu memakai global.owner di file config, otomatis masukkan juga:
+    if (global.owner && Array.isArray(global.owner)) {
+        global.owner.forEach(num => {
+            let formattedNum = num.includes('@s.whatsapp.net') ? num : `${num}@s.whatsapp.net`;
+            if (!allowedNumbers.includes(formattedNum)) allowedNumbers.push(formattedNum);
+        });
+    }
 
-            // 3. CEK APAKAH NOMOR ADA DI DAFTAR PENGECUALIAN
+    for (let node of callData) {
+        if (node.status === 'offer') {
+            // 3. NORMALISASI ID PENELEPON (INI YANG BIKIN ANTI GAGAL)
+            // Mengubah misal: 62812...:5@s.whatsapp.net menjadi 62812...@s.whatsapp.net
+            const callerId = jidNormalizedUser(node.from);
+
+            // 4. CEK APAKAH PENELEPON ADA DI DAFTAR WHITELIST
             if (allowedNumbers.includes(callerId)) {
-                console.log(chalk.greenBright(`[CALL] Panggilan dari nomor VIP / Owner (${callerId.split('@')[0]}) dibiarkan masuk.`));
-                continue; // Hentikan proses di sini, jangan tolak panggilannya
+                console.log(chalk.green.bold(`[CALL] Panggilan dari VIP/Owner ${callerId.split('@')[0]} dibiarkan masuk.`));
+                continue; // Lompati proses penolakan, biarkan HP berdering
             }
 
-            // 4. JIKA BUKAN NOMOR YANG DIIZINKAN, TOLAK PANGGILAN
+            // 5. EKSEKUSI PENOLAKAN UNTUK NOMOR ORANG LAIN
             try {
-                await RAEHAN2GD.rejectCall(call.id, call.from);
+                // Tolak secepat mungkin
+                await RAEHAN2GD.rejectCall(node.id, node.from);
 
-                // Kirim pesan otomatis ke penelpon
-                await RAEHAN2GD.sendMessage(call.from, { 
-                    text: `╭━━━━━━━━━━━━━╾•\n┃𝙷𝙰𝙻𝙻𝙾 𝙼𝙰𝚂 / 𝙼𝙱𝙰𝙺\n┃ @${call.from.split('@')[0]}\n┣━━━━━━━━━━━━━━•\n┃ 𝘗𝘈𝘕𝘎𝘎𝘐𝘓𝘈𝘕  ${call.isVideo ? 'Video' : 'Suara'}\n┣━━━━━━━━━━━━━━•\n┃𝙼𝚊𝚊𝚏, 𝚗𝚘𝚖𝚘𝚛 𝚊𝚗𝚍𝚊 𝚝𝚒𝚍𝚊𝚔\n┃𝚝𝚎𝚛𝚍𝚊𝚏𝚝𝚊𝚛 𝚜𝚎𝚋𝚊𝚐𝚊𝚒 𝚅𝙸𝙿.\n┃𝙿𝚊𝚗𝚐𝚐𝚒𝚕𝚊𝚗 𝚘𝚝𝚘𝚖𝚊𝚝𝚒𝚜 𝚍𝚒𝚝𝚘𝚕𝚊𝚔.\n┣━━━━━━━━━━━━━━•\n┃ɪɴɪ  ᴀᴅᴀʟᴀʜ  ᴋᴇᴄᴇʀᴅᴀsᴀɴ  ʙᴜᴀᴛᴀɴ\n┃ᴅɪʙᴜᴀᴛ  ᴏʟᴇʜ  ʀᴀᴇʜᴀɴ\n╰━━━━━━━━━━━━━━╯`,
-                    mentions: [call.from]
+                // Kirim pesan otomatis
+                const textPesan = `╭━━━━━━━━━━━━━╾•
+┃ 𝙷𝙰𝙻𝙻𝙾 𝙼𝙰𝚂 / 𝙼𝙱𝙰𝙺
+┃ @${callerId.split('@')[0]}
+┣━━━━━━━━━━━━━━•
+┃ 𝘗𝘈𝘕𝘎𝘎𝘐𝘓𝘈𝘕 ${node.isVideo ? 'Video' : 'Suara'}
+┣━━━━━━━━━━━━━━•
+┃ 𝙼𝚊𝚊𝚏, 𝚗𝚘𝚖𝚘𝚛 𝚊𝚗𝚍𝚊 𝚝𝚒𝚍𝚊𝚔
+┃ 𝚝𝚎𝚛𝚍𝚊𝚏𝚝𝚊𝚛 𝚜𝚎𝚋𝚊𝚐𝚊𝚒 𝚅𝙸𝙿.
+┃ 𝙿𝚊𝚗𝚐𝚐𝚒𝚕𝚊𝚗 𝚘𝚝𝚘𝚖𝚊𝚝𝚒𝚜 𝚍𝚒𝚝𝚘𝚕𝚊𝚔.
+┣━━━━━━━━━━━━━━•
+┃ ɪɴɪ  ᴀᴅᴀʟᴀʜ  ᴋᴇᴄᴇʀᴅᴀsᴀɴ  ʙᴜᴀᴛᴀɴ
+┃ ᴅɪʙᴜᴀᴛ  ᴏʟᴇʜ  ʀᴀᴇʜᴀɴ
+╰━━━━━━━━━━━━━━╯`;
+
+                await RAEHAN2GD.sendMessage(node.from, { 
+                    text: textPesan, 
+                    mentions: [callerId] 
                 });
 
-                console.log(chalk.redBright(`[CALL] Panggilan dari ${call.from.split('@')[0]} otomatis ditolak.`));
+                console.log(chalk.red.bold(`[CALL] Panggilan dari ${callerId.split('@')[0]} berhasil ditolak otomatis.`));
             } catch (err) {
-                console.error("Gagal menolak panggilan:", err);
+                console.error("Error saat menolak panggilan:", err);
             }
         }
     }
-});
+});   
 	
 	
 	RAEHAN2GD.ev.on('messages.upsert', async (message) => {
