@@ -282,7 +282,7 @@ async function startRAEHAN2GDBot() {
 				
 				if (id.status === 'offer') {
 					
-					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'}, caption: hanzzz}, mentions: [id.from]});
+					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'}, caption: hanzzz});
 					 
 					await RAEHAN2GD.rejectCall(id.id, id.from)
 				}
