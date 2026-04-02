@@ -249,7 +249,13 @@ async function startRAEHAN2GDBot() {
 	 
 	
 	 RAEHAN2GD.ev.on('call', async (call) => {
-		const hanzzz =` 
+		
+		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
+		 {
+			for (let id of call) {
+				
+				if (id.status === 'offer') {
+					const hanzzz =` 
 ╭┈──────────╮
 │ ❍ ANTI PANGGILAN ❍
 ╰┈──────────╯
@@ -276,12 +282,6 @@ async function startRAEHAN2GDBot() {
 ┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ
 ┃
 ▬▭▬▭▬▭▬▭▬▬▭▬▭`
-		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
-		 {
-			for (let id of call) {
-				
-				if (id.status === 'offer') {
-					
 					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'},caption: hanzzz, mentions: [id.from]});
 					 
 					await RAEHAN2GD.rejectCall(id.id, id.from)
