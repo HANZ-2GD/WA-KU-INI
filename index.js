@@ -249,14 +249,40 @@ async function startRAEHAN2GDBot() {
 	 
 	
 	 RAEHAN2GD.ev.on('call', async (call) => {
-		
+		const hanzzz =` 
+╭┈──────────╮
+│ ❍ ANTI PANGGILAN ❍
+╰┈──────────╯
+
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+┃
+┃HALLO MAS / MBAK
+┃@${id.from.split('@')[0]}
+┃
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+┃Panggilan :${id.isVideo ? 'Video' : 'Suara'}
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+┃
+┃maaf mas / mbak
+┃pemilik sedang 
+┃tidak membawa 
+┃hp / handphone
+┃Tolong 
+┃Tinggalkan Pesan
+┃
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+┃
+┃ɪɴɪ ᴀᴅᴀʟᴀʜ ᴋᴇᴄᴇʀᴅᴀsᴀɴ ʙᴜᴀᴛᴀɴ
+┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ
+┃
+▬▭▬▭▬▭▬▭▬▬▭▬▭`
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
 		 {
 			for (let id of call) {
 				
 				if (id.status === 'offer') {
 					
-					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'}}, { text: `╭┈──────────╮\n│ ❍ ANTI PANGGILAN ❍\n╰┈──────────╯\n\n\n▬▭▬▭▬▭▬▭▬▬▭▬▭\n┃\n┃HALLO MAS / MBAK\n┃@${id.from.split('@')[0]}\n┃\n▬▭▬▭▬▭▬▭▬▬▭▬▭\n┃PANGGILAN ${id.isVideo ? 'Video' : 'Suara'}\n▬▭▬▭▬▭▬▭▬▬▭▬▭\n┃\n┃maaf mas / mbak\n┃pemilik sedang \n┃tidak membawa \n┃hp / handphone\n┃Tolong\n┃Tinggalkan Pesan\n┃\n▬▭▬▭▬▭▬▭▬▬▭▬▭\n┃\n┃ɪɴɪ ᴀᴅᴀʟᴀʜ ᴋᴇᴄᴇʀᴅᴀsᴀɴ ʙᴜᴀᴛᴀɴ\n┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ\n┃\n▬▭▬▭▬▭▬▭▬▬▭▬▭`, mentions: [id.from]});
+					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'}, caption: hanzzz}, mentions: [id.from]});
 					 
 					await RAEHAN2GD.rejectCall(id.id, id.from)
 				}
