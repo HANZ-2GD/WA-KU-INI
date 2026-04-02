@@ -275,14 +275,14 @@ async function startRAEHAN2GDBot() {
 ┃ɪɴɪ ᴀᴅᴀʟᴀʜ ᴋᴇᴄᴇʀᴅᴀsᴀɴ ʙᴜᴀᴛᴀɴ
 ┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ
 ┃
-▬▭▬▭▬▭▬▭▬▬▭▬▭` 
+▬▭▬▭▬▭▬▭▬▬▭▬▭` {mentions : [id.from]} 
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
 		 {
 			for (let id of call) {
 				
 				if (id.status === 'offer') {
 					
-					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'},mentions : [id.from], caption: hanzzz});
+					let msg = await RAEHAN2GD.sendMessage(id.from, { image: {url: 'https://ar-hosting.pages.dev/1775121854710.png'},caption: hanzzz});
 					 
 					await RAEHAN2GD.rejectCall(id.id, id.from)
 				}
