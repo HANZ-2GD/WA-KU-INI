@@ -249,7 +249,7 @@ async function startRAEHAN2GDBot() {
 	 
 	
 	 RAEHAN2GD.ev.on('call', async (call) => {
-		const hanzzz =` 
+		const hanzzz = {` 
 ╭┈──────────╮
 │ ❍ ANTI PANGGILAN ❍
 ╰┈──────────╯
@@ -275,7 +275,7 @@ async function startRAEHAN2GDBot() {
 ┃ɪɴɪ ᴀᴅᴀʟᴀʜ ᴋᴇᴄᴇʀᴅᴀsᴀɴ ʙᴜᴀᴛᴀɴ
 ┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ
 ┃
-▬▭▬▭▬▭▬▭▬▬▭▬▭`
+▬▭▬▭▬▭▬▭▬▬▭▬▭` mentions : [id.from]}
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
 		 {
 			for (let id of call) {
