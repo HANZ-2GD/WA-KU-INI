@@ -35,7 +35,7 @@ jobs:
           # Loop penjaga: Jika index.js error/crash, bot langsung restart otomatis
           while true; do
             echo "Menjalankan bot..."
-            node index.js
+            npm start
             echo "Bot terhenti, mencoba restart otomatis dalam 1 detik..."
             sleep 1
           done
