@@ -275,7 +275,7 @@ async function startRAEHAN2GDBot() {
 ┃ɪɴɪ ᴀᴅᴀʟᴀʜ ᴋᴇᴄᴇʀᴅᴀsᴀɴ ʙᴜᴀᴛᴀɴ
 ┃ᴅɪ ʙᴜᴀᴛ ᴏʟᴇʜ ʀᴀᴇʜᴀɴ
 ┃
-▬▭▬▭▬▭▬▭▬▬▭▬▭` {mentions : [id.from]} 
+▬▭▬▭▬▭▬▭▬▬▭▬▭`, mentions : [id.from];
 		let botNumber = await RAEHAN2GD.decodeJid(RAEHAN2GD.user.id);
 		 {
 			for (let id of call) {
