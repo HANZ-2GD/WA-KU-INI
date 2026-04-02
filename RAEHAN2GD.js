@@ -210,8 +210,50 @@ case 'setppgchanz': {
 		case 'insta' : case 'instagram' :  {
 			const hanzzz =`
         
-		https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq`
-		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://ar-hosting.pages.dev/1775117597266.jpg'}, 
+╭┈───────╮
+│ ❍ 𝙞𝙣𝙨𝙩𝙖𝙜𝙧𝙖𝙢 ❍
+╰┈───────╯
+
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+
+
+https://www.instagram.com/hanz_932?igsh=Ymp6dTNjYzhtODFq
+
+
+▬▭▬▭▬▭▬▭▬▬▭▬▭`
+		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://ar-hosting.pages.dev/1775119433561.png'},  
+caption: hanzzz })}
+		break
+
+
+
+
+
+		
+
+		
+	case 'jam' : case 'tanggal' :  {
+			const hanzzz =`
+        
+╭┈────────────╮
+│ ❍  𝙅𝘼𝙈 & 𝙏𝘼𝙉𝙂𝙂𝘼𝙇❍
+╰┈────────────╯
+
+▬▭▬▭▬▭▬▭▬▬▭▬▭
+
+
+╭━━━━━━━━━━━━╾•
+│⃟•╾ ◎ HARI : ${hari}
+│⃟•╾ ◎ TGL  : ${tanggal}
+│⃟•━━━━━━━━━━━╾•
+│⃟•╾ ◎ JAM   ${jamjak} WIB
+│⃟•╾ ◎ JAM   ${jammak} WITA
+│⃟•╾ ◎ JAM   ${jamjay} WIT
+╰━━━━━━━━━━━━━╯
+
+
+▬▭▬▭▬▭▬▭▬▬▭▬▭`
+		RAEHAN2GD.sendMessage(m.chat, { image: {url: 'https://ar-hosting.pages.dev/1775122554230.png'}, 
 caption: hanzzz })}
 		break
 
