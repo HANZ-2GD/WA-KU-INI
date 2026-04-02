@@ -266,7 +266,7 @@ async function startRAEHAN2GDBot() {
 ┃@${id.from.split('@')[0]}
 ┃
 ▬▭▬▭▬▭▬▭▬▬▭▬▭
-┃Panggilan :${id.isVideo ? 'Video' : 'Suara'}
+┃Panggilan : ${id.isVideo ? 'Video' : 'Suara'}
 ▬▭▬▭▬▭▬▭▬▬▭▬▭
 ┃
 ┃maaf mas / mbak
