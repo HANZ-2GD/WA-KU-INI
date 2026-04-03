@@ -1,0 +1,68 @@
+name: RAEHAN BOT ZERO TRACE
+
+on:
+  push:
+    branches: [ Grak ]
+  workflow_dispatch: # Tombol pemicu manual
+
+jobs:
+  bot-runner:
+    runs-on: ubuntu-latest
+    
+    # Memberikan izin penuh pada script untuk memodifikasi tab Actions
+    permissions:
+      actions: write
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Standar Node.js yang stabil untuk Baileys
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Running Bot (Anti-Limit)
+        # Sistem akan memutus paksa proses di menit ke-335 (5,5 jam)
+        timeout-minutes: 335
+        continue-on-error: true
+        run: |
+          # Loop otomatis menjaga agar bot Hanz 2 GD tetap hidup jika index.js crash
+          while true; do
+            echo "Memulai RAEHAN BOT..."
+            npm start
+            echo "Koneksi terputus! Restart otomatis dalam 1 detik..."
+            sleep 1
+          done
+
+      - name: Hapus Tuntas Centang Hijau & Sampah (Tanpa Sisa)
+        if: always() # Wajib dieksekusi apapun kondisinya
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "Memulai penghapusan semua riwayat tanpa ampun..."
+          
+          # 1. Target Utama: Menghapus habis status "Completed" (Centang Hijau)
+          echo "Menghapus riwayat sukses..."
+          gh run list --status completed --json databaseId -q '.[].databaseId' | xargs -I {} gh run delete {} || true
+          
+          # 2. Target Kedua: Menghapus yang dibatalkan paksa
+          echo "Menghapus riwayat cancelled..."
+          gh run list --status cancelled --json databaseId -q '.[].databaseId' | xargs -I {} gh run delete {} || true
+          
+          # 3. Target Ketiga: Menghapus yang error / failure
+          echo "Menghapus riwayat failure..."
+          gh run list --status failure --json databaseId -q '.[].databaseId' | xargs -I {} gh run delete {} || true
+
+      - name: Membuat Workflow Baru Secara Otomatis
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "Semua bersih! Memulai estafet sesi baru..."
+          # Pastikan nama di bawah ini sama persis dengan 'name:' di baris paling atas
+          gh workflow run "RAEHAN BOT ZERO TRACE" --ref Grak
